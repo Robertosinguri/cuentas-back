@@ -31,7 +31,6 @@ jobs:
         Host ${{ secrets.SERVER_HOST }}
           HostName ${{ secrets.SERVER_HOST }}
           User roberto
-          StrictHostLineChecking no
           StrictHostKeyChecking no
           UserKnownHostsFile /dev/null
           ProxyCommand /usr/bin/cloudflared access ssh --hostname %h --id ${{ secrets.CF_CLIENT_ID }} --secret ${{ secrets.CF_CLIENT_SECRET }}
