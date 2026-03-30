@@ -49,9 +49,14 @@ jobs:
       run: |
         echo "🚀 Iniciando despliegue Docker en el NAS..."
         sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh ${{ secrets.SERVER_HOST }} "bash -s" << 'EOF'
+          set -e
           cd /mnt/asustor_data/25-DOCKER/cuentas-back
-          docker-compose down
-          docker-compose up --build -d
+          echo "🛑 Deteniendo contenedor antiguo..."
+          docker compose down || true
+          echo "🏗️ Construyendo y levantando nueva versión..."
+          docker compose up --build -d
+          echo "🧹 Limpiando imágenes obsoletas..."
           docker image prune -f
           echo "✅ Despliegue completado con éxito."
+          docker ps | grep cuentas-back
         EOF
